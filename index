@@ -1,0 +1,1406 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>دانشجویار | مرکز هدایت تحصیلی دکتر قریشی</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#3F3192">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<style>
+  :root{
+    --bg:#EEF2F6; --bg-elevated:#FFFFFF; --card:#F7F9FB;
+    --ink:#16233A; --ink-soft:#4A5A72; --ink-faint:#7C8AA0;
+    --line:#C7D2DE; --line-strong:#AEBBCB;
+    --gold:#A67C3D; --gold-deep:#7C5C2B; --gold-bg:#F3E9D6;
+    --blue:#1D4E89; --blue-deep:#123762; --blue-bg:#E3ECF6;
+    --danger:#B4453B;
+    --shadow:0 2px 10px rgba(22,35,58,.06);
+  }
+  html[data-theme="dark"]{
+    --bg:#0E1622; --bg-elevated:#16202E; --card:#182432;
+    --ink:#EAF0F6; --ink-soft:#AEBED2; --ink-faint:#7E90A8;
+    --line:#28394D; --line-strong:#37495F;
+    --gold:#D9B26B; --gold-deep:#C99A46; --gold-bg:#332A1B;
+    --blue:#6FA3DE; --blue-deep:#3E71A8; --blue-bg:#16283D;
+    --danger:#E0857C;
+    --shadow:0 2px 14px rgba(0,0,0,.35);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:'Vazirmatn',sans-serif; line-height:1.9;
+    transition:background .25s ease, color .25s ease;
+  }
+  button{font-family:inherit;}
+  .wrap{max-width:760px; margin:0 auto; padding:0 18px;}
+  img,svg{display:block;}
+  a{color:inherit; text-decoration:none;}
+
+  /* ===== Splash ===== */
+  #splash{
+    position:fixed; inset:0; z-index:999;
+    background:#3F3192;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    color:#fff; text-align:center; gap:14px;
+    animation:splashOut .65s cubic-bezier(.5,0,.2,1) 1.9s forwards;
+  }
+  #splash .logo{width:180px; height:180px; border-radius:24px; animation:pop .7s ease;}
+  #splash h1{font-size:22px; font-weight:800; margin:6px 0 0;}
+  #splash p{font-size:13.5px; color:#D6D2F0; margin:0; font-weight:500;}
+  #splash .tagline{
+    position:absolute; bottom:34px; font-size:12.5px; color:var(--gold);
+    font-weight:600; letter-spacing:.03em;
+  }
+  @keyframes pop{from{opacity:0; transform:scale(.8);}to{opacity:1; transform:scale(1);}}
+  @keyframes splashOut{
+    0%{opacity:1; transform:translateY(0) scale(1);}
+    100%{opacity:0; visibility:hidden; transform:translateY(-46px) scale(1.04);}
+  }
+
+  /* ===== Entry gate ===== */
+  #gate{
+    position:fixed; inset:0; z-index:500;
+    background:var(--bg); display:flex; align-items:center; justify-content:center; padding:20px;
+    overflow:hidden;
+  }
+  .gate-card{
+    width:100%; max-width:360px; background:var(--bg-elevated); border:1px solid var(--line);
+    border-radius:18px; padding:26px 22px; box-shadow:var(--shadow); text-align:center;
+    opacity:0; transform:translateY(38px) scale(.94);
+    animation:gateSlideIn .7s cubic-bezier(.2,.8,.2,1) 1.9s both;
+  }
+  @keyframes gateSlideIn{
+    to{opacity:1; transform:translateY(0) scale(1);}
+  }
+  .gate-logo{width:76px; height:76px; border-radius:16px; margin:0 auto 14px;}
+  .gate-card h2{font-size:17px; font-weight:800; margin:0 0 6px;}
+  .gate-sub{font-size:12.5px; color:var(--ink-faint); margin:0 0 18px;}
+  .form-field-g{text-align:right; margin-bottom:12px;}
+  .form-field-g label{display:block; font-size:12.5px; font-weight:700; margin-bottom:6px; color:var(--ink-soft);}
+  .form-field-g input{
+    width:100%; height:44px; border-radius:10px; border:1px solid var(--line-strong);
+    background:var(--bg); color:var(--ink); padding:0 13px; font-size:14px; font-family:inherit;
+  }
+  .form-field-g input:focus{outline:2px solid var(--blue); outline-offset:1px;}
+  .gate-error{color:var(--danger); font-size:12px; min-height:16px; margin-bottom:6px; text-align:right;}
+  .gate-submit{
+    width:100%; height:46px; border:none; border-radius:10px; background:var(--blue); color:#fff;
+    font-size:14px; font-weight:700; cursor:pointer; font-family:inherit; margin-top:4px;
+  }
+  .gate-submit:active{transform:scale(.98);}
+  .gate-privacy{font-size:11px; color:var(--ink-faint); margin:14px 0 0; line-height:1.7;}
+
+  /* ===== Topbar ===== */
+  header.topbar{
+    position:sticky; top:0; z-index:20;
+    background:var(--bg-elevated); border-bottom:1px solid var(--line);
+  }
+  .topbar-inner{
+    display:flex; align-items:center; gap:10px; padding:12px 18px;
+    max-width:760px; margin:0 auto;
+  }
+  .icon-btn{
+    width:38px; height:38px; border-radius:10px; border:1px solid var(--line);
+    background:var(--card); display:flex; align-items:center; justify-content:center;
+    cursor:pointer; color:var(--ink); flex-shrink:0;
+  }
+  .icon-btn:active{transform:scale(.94);}
+  .topbar-title{font-size:16px; font-weight:700; flex:1;}
+  .topbar-title small{display:block; font-size:11.5px; color:var(--ink-faint); font-weight:500;}
+  #backBtn{display:none;}
+
+  /* ===== Screens ===== */
+  .screen{display:none; animation:fadeIn .3s ease;}
+  .screen.active{display:block;}
+  @keyframes fadeIn{from{opacity:0; transform:translateY(6px);}to{opacity:1; transform:translateY(0);}}
+  main{padding:20px 0 60px;}
+
+  /* ===== Home ===== */
+  .home-hero{
+    background:linear-gradient(135deg,var(--blue-deep),var(--blue));
+    color:#fff; border-radius:16px; padding:26px 22px; margin:0 18px 22px;
+    position:relative; overflow:hidden;
+  }
+  .home-hero h2{font-size:19px; font-weight:800; margin:0 0 6px;}
+  .home-hero p{font-size:13px; color:#D9E6F5; margin:0; max-width:280px;}
+  .home-hero .badge{
+    position:absolute; left:18px; top:18px; width:44px; height:44px;
+  }
+  .menu-grid{
+    display:grid; grid-template-columns:repeat(2,1fr); gap:12px; padding:0 18px;
+  }
+  .menu-card{
+    background:var(--bg-elevated); border:1px solid var(--line); border-radius:14px;
+    padding:18px 14px; display:flex; flex-direction:column; gap:10px;
+    cursor:pointer; box-shadow:var(--shadow);
+  }
+  .menu-card:active{transform:scale(.97);}
+  .menu-card .mi{
+    width:38px; height:38px; border-radius:10px; display:flex; align-items:center; justify-content:center;
+    background:var(--blue-bg); color:var(--blue-deep);
+  }
+  html[data-theme="dark"] .menu-card .mi{color:var(--blue);}
+  .menu-card span{font-size:13.5px; font-weight:700;}
+
+  /* ===== Section heading ===== */
+  .section-title{
+    font-size:16px; font-weight:800; margin:26px 18px 12px; display:flex; align-items:center; gap:8px;
+  }
+  .section-title::before{content:""; width:4px; height:16px; background:var(--gold); border-radius:2px;}
+
+  /* ===== Major cards (list) ===== */
+  .major-list{padding:0 18px; display:flex; flex-direction:column; gap:10px; margin-bottom:8px;}
+  .filter-chips{display:flex; gap:8px; overflow-x:auto; padding:0 18px 14px; scrollbar-width:thin;}
+  .fchip{
+    flex-shrink:0; white-space:nowrap; font-size:12.5px; font-weight:700;
+    border:1px solid var(--line-strong); background:var(--bg-elevated); color:var(--ink-soft);
+    border-radius:20px; padding:8px 15px; cursor:pointer;
+  }
+  .fchip.active{background:var(--blue); color:#fff; border-color:var(--blue);}
+  .cat-label{margin:14px 18px 8px; font-size:12px; font-weight:700; color:var(--gold-deep);}
+  html[data-theme="dark"] .cat-label{color:var(--gold);}
+  .major-row{
+    display:flex; align-items:center; gap:12px;
+    background:var(--bg-elevated); border:1px solid var(--line); border-radius:12px; padding:12px 14px;
+    cursor:pointer;
+  }
+  .major-row .ic{
+    width:44px; height:44px; border-radius:10px; flex-shrink:0;
+    display:flex; align-items:center; justify-content:center; border:1.5px solid currentColor;
+  }
+  .major-row .ic svg{width:24px; height:24px;}
+  .major-row .info{flex:1; min-width:0;}
+  .major-row .info h3{margin:0 0 3px; font-size:14.5px; font-weight:700;}
+  .major-row .info p{margin:0; font-size:12px; color:var(--ink-faint); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .major-row .fav-btn{flex-shrink:0; background:none; border:none; cursor:pointer; color:var(--ink-faint); padding:6px;}
+  .major-row .fav-btn.active{color:var(--danger);}
+  .major-row .chev{color:var(--ink-faint); flex-shrink:0;}
+
+  /* ===== Search ===== */
+  .search-box{padding:0 18px 8px;}
+  .search-box input{
+    width:100%; height:46px; border-radius:12px; border:1px solid var(--line-strong);
+    background:var(--bg-elevated); color:var(--ink); padding:0 16px; font-size:14px; font-family:inherit;
+  }
+  .search-box input:focus{outline:2px solid var(--blue); outline-offset:1px;}
+  .empty-state{text-align:center; padding:40px 20px; color:var(--ink-faint); font-size:13.5px;}
+
+  /* ===== Major detail ===== */
+  .detail-hero{padding:6px 18px 18px;}
+  .detail-top{display:flex; align-items:center; gap:14px; margin-bottom:14px;}
+  .detail-top .ic{
+    width:58px; height:58px; border-radius:14px; border:1.5px solid currentColor;
+    display:flex; align-items:center; justify-content:center; flex-shrink:0;
+  }
+  .detail-top .ic svg{width:32px; height:32px;}
+  .detail-top h2{margin:0 0 3px; font-size:20px; font-weight:800;}
+  .detail-top .sub{font-size:12.5px; color:var(--ink-faint); font-weight:600;}
+  .detail-actions{display:flex; gap:8px; margin-bottom:16px;}
+  .pill-btn{
+    display:flex; align-items:center; gap:6px; font-size:12.5px; font-weight:600;
+    border:1px solid var(--line-strong); background:var(--bg-elevated); color:var(--ink-soft);
+    border-radius:20px; padding:8px 14px; cursor:pointer;
+  }
+  .pill-btn.active{background:var(--danger); color:#fff; border-color:var(--danger);}
+
+  .field{
+    background:var(--bg-elevated); border:1px solid var(--line); border-radius:12px;
+    padding:15px 16px; margin:0 18px 10px;
+  }
+  .field .flabel{
+    font-size:12px; font-weight:700; color:var(--gold-deep); margin-bottom:7px;
+    display:flex; align-items:center; gap:6px;
+  }
+  html[data-theme="dark"] .field .flabel{color:var(--gold);}
+  .field p{margin:0; font-size:14px; color:var(--ink);}
+  .field ul{margin:0; padding-inline-start:18px;}
+  .field li{font-size:13.5px; margin-bottom:4px;}
+  .chip-wrap{display:flex; flex-wrap:wrap; gap:7px;}
+  .chip{font-size:12px; padding:5px 11px; border-radius:20px; background:var(--blue-bg); color:var(--blue-deep); font-weight:600;}
+  html[data-theme="dark"] .chip{color:var(--blue);}
+
+  .faq-item{border-bottom:1px solid var(--line); padding:12px 0;}
+  .faq-item:last-child{border-bottom:none;}
+  .faq-q{
+    display:flex; justify-content:space-between; align-items:center; cursor:pointer;
+    font-size:13.5px; font-weight:700;
+  }
+  .faq-a{font-size:13px; color:var(--ink-soft); margin-top:8px; display:none;}
+  .faq-item.open .faq-a{display:block;}
+  .faq-item.open .faq-q .chevd{transform:rotate(180deg);}
+  .chevd{transition:transform .2s ease; flex-shrink:0;}
+
+  .cta-box{
+    margin:22px 18px 0; background:linear-gradient(135deg,var(--gold-deep),var(--gold));
+    border-radius:14px; padding:20px; color:#fff; text-align:center;
+  }
+  .cta-box h3{margin:0 0 6px; font-size:15.5px; font-weight:800;}
+  .cta-box p{margin:0 0 14px; font-size:12.5px; color:#FBF2E2;}
+  .cta-box button{
+    background:#fff; color:var(--gold-deep); border:none; border-radius:10px;
+    padding:11px 20px; font-size:13.5px; font-weight:700; cursor:pointer;
+  }
+
+  /* ===== Quiz ===== */
+  .quiz-progress{padding:0 18px 16px;}
+  .quiz-progress .bar{height:6px; background:var(--line); border-radius:6px; overflow:hidden;}
+  .quiz-progress .bar span{display:block; height:100%; background:var(--gold); transition:width .3s ease;}
+  .quiz-progress .lbl{font-size:12px; color:var(--ink-faint); margin-top:6px;}
+  .quiz-q{padding:0 18px;}
+  .quiz-q h3{font-size:16px; font-weight:800; margin:0 0 18px;}
+  .quiz-opt{
+    display:block; width:100%; text-align:right; background:var(--bg-elevated);
+    border:1.5px solid var(--line); border-radius:12px; padding:14px 16px; margin-bottom:10px;
+    font-size:14px; cursor:pointer; color:var(--ink); font-family:inherit;
+  }
+  .quiz-opt:hover{border-color:var(--blue);}
+  .quiz-result{padding:0 18px; text-align:center;}
+  .quiz-result .medal{width:64px; height:64px; margin:0 auto 14px;}
+  .quiz-result h3{font-size:13px; color:var(--ink-faint); font-weight:600; margin:0 0 4px;}
+  .quiz-result h2{font-size:22px; font-weight:800; margin:0 0 16px;}
+
+  /* ===== Tuition calculator ===== */
+  .form-field{padding:0 18px 14px;}
+  .form-field label{display:block; font-size:13px; font-weight:700; margin-bottom:7px;}
+  .form-field select, .form-field input{
+    width:100%; height:46px; border-radius:12px; border:1px solid var(--line-strong);
+    background:var(--bg-elevated); color:var(--ink); padding:0 14px; font-size:14px; font-family:inherit;
+  }
+  .result-card{
+    margin:6px 18px 0; background:var(--blue-bg); border:1px solid var(--blue); border-radius:14px;
+    padding:20px; text-align:center;
+  }
+  .result-card .amount{font-size:26px; font-weight:800; color:var(--blue-deep);}
+  html[data-theme="dark"] .result-card .amount{color:var(--blue);}
+  .result-card .cap{font-size:12px; color:var(--ink-faint); margin-top:4px;}
+  .note-box{
+    margin:18px 18px 0; border:1px dashed var(--line-strong); border-radius:12px;
+    padding:13px 15px; font-size:12.5px; color:var(--ink-faint); background:var(--card);
+  }
+
+  /* ===== Contact / About ===== */
+  .contact-card{
+    display:flex; align-items:center; gap:14px; background:var(--bg-elevated);
+    border:1px solid var(--line); border-radius:12px; padding:15px 16px; margin:0 18px 10px;
+  }
+  .contact-card .avatar{
+    width:48px; height:48px; border-radius:50%; background:var(--blue-bg); color:var(--blue-deep);
+    display:flex; align-items:center; justify-content:center; font-weight:800; font-size:16px; flex-shrink:0;
+  }
+  html[data-theme="dark"] .contact-card .avatar{color:var(--blue);}
+  .contact-card .info h4{margin:0 0 3px; font-size:14px; font-weight:700;}
+  .contact-card .info a{font-size:13px; color:var(--blue); font-weight:600;}
+  .link-btn{
+    display:flex; align-items:center; justify-content:center; gap:8px;
+    background:var(--bg-elevated); border:1px solid var(--line); border-radius:12px;
+    padding:14px; margin:0 18px 10px; font-size:14px; font-weight:700; cursor:pointer;
+  }
+  .link-btn.primary{background:var(--blue); color:#fff; border-color:var(--blue);}
+  .link-btn.insta{background:linear-gradient(135deg,#F58529,#DD2A7B,#8134AF); color:#fff; border:none;}
+
+  footer.appfoot{padding:26px 18px 8px; text-align:center; font-size:11.5px; color:var(--ink-faint);}
+
+  @media(min-width:640px){.menu-grid{grid-template-columns:repeat(3,1fr);}}
+</style>
+</head>
+<body>
+
+<div id="splash">
+  <img class="logo" src="icons/icon-512.png" alt="دانشجویار">
+  <p>مرکز هدایت تحصیلی دکتر قریشی</p>
+  <div class="tagline">انتخابی آگاهانه، آینده‌ای موفق</div>
+</div>
+
+<div id="gate">
+  <div class="gate-card">
+    <img class="gate-logo" src="icons/icon-512.png" alt="دانشجویار">
+    <h2>خوش آمدید به دانشجویار</h2>
+    <p class="gate-sub">برای استفاده از برنامه، لطفاً مشخصات خود را وارد کنید.</p>
+    <div class="form-field-g"><label>نام</label><input id="gFirst" type="text" placeholder="نام خود را بنویسید"></div>
+    <div class="form-field-g"><label>نام خانوادگی</label><input id="gLast" type="text" placeholder="نام خانوادگی خود را بنویسید"></div>
+    <div class="form-field-g"><label>شماره موبایل</label><input id="gPhone" type="tel" inputmode="numeric" maxlength="11" placeholder="09xxxxxxxxx"></div>
+    <div id="gateError" class="gate-error"></div>
+    <button class="gate-submit" onclick="submitGate()">ورود و مشاهده رشته‌ها</button>
+    <p class="gate-privacy">🔒 اطلاعات شما نزد مرکز مشاوره دانشجویار محرمانه باقی می‌ماند و صرفاً برای پیگیری مشاوره تحصیلی استفاده می‌شود.</p>
+  </div>
+</div>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <button class="icon-btn" id="backBtn" aria-label="بازگشت" onclick="goBack()">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
+    <div class="topbar-title" id="pageTitle">دانشجویار<small>انتخابی آگاهانه، آینده‌ای موفق</small></div>
+    <button class="icon-btn" id="themeBtn" aria-label="تغییر تم" onclick="toggleTheme()">
+      <svg id="themeIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3a9 9 0 109 9c0-.46-.04-.92-.1-1.36A5.4 5.4 0 0112 3z"/></svg>
+    </button>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- HOME -->
+  <section class="screen" id="screen-home">
+    <div class="home-hero">
+      <svg class="badge" viewBox="0 0 512 512"><circle cx="256" cy="256" r="220" fill="rgba(255,255,255,.12)"/><circle cx="256" cy="256" r="150" stroke="#fff" stroke-width="10" fill="none"/><circle cx="256" cy="256" r="18" fill="#D9B26B"/></svg>
+      <h2>مرجع انتخاب رشته دانشگاه آزاد اسلامی</h2>
+      <p>معرفی کامل رشته‌ها، تست هدایت تحصیلی و مشاوره تخصصی — همه‌جا در دسترس شما.</p>
+    </div>
+    <div class="menu-grid" id="homeMenu"></div>
+  </section>
+
+  <!-- MAJORS LIST -->
+  <section class="screen" id="screen-majors">
+    <div id="majorsListWrap"></div>
+  </section>
+
+  <!-- SEARCH -->
+  <section class="screen" id="screen-search">
+    <div class="search-box"><input type="text" id="searchInput" placeholder="نام رشته یا کلیدواژه را وارد کنید…" oninput="renderSearch()"></div>
+    <div class="major-list" id="searchResults"></div>
+  </section>
+
+  <!-- MAJOR DETAIL -->
+  <section class="screen" id="screen-major"></section>
+
+  <!-- QUIZ -->
+  <section class="screen" id="screen-quiz"></section>
+
+  <!-- TUITION -->
+  <section class="screen" id="screen-tuition">
+    <div class="section-title">ماشین حساب شهریه</div>
+    <div class="form-field">
+      <label>رشته</label>
+      <select id="tRshte" onchange="calcTuition()"></select>
+    </div>
+    <div class="form-field">
+      <label>مقطع</label>
+      <select id="tMaghta" onchange="calcTuition()">
+        <option value="1">کارشناسی</option>
+        <option value="1.15">کارشناسی ارشد</option>
+      </select>
+    </div>
+    <div class="form-field">
+      <label>تعداد واحد این نیمسال</label>
+      <input type="number" id="tVahed" value="16" min="1" max="24" oninput="calcTuition()">
+    </div>
+    <div class="form-field">
+      <label>قیمت هر واحد (تومان) — قابل ویرایش</label>
+      <input type="number" id="tPrice" value="900000" step="10000" oninput="calcTuition()">
+    </div>
+    <div class="result-card">
+      <div class="amount" id="tResult">—</div>
+      <div class="cap">شهریه تقریبی این نیمسال</div>
+    </div>
+    <div class="note-box"><strong>یادداشت:</strong> این ابزار فقط یک برآورد ساده بر اساس قیمت هر واحد است که خودتان تنظیم می‌کنید. برای شهریه دقیق و رسمی، حتماً با اداره آموزش دانشگاه یا مشاور تماس بگیرید.</div>
+  </section>
+
+  <!-- LIVE CHAT -->
+  <section class="screen" id="screen-livechat">
+    <div class="cta-box" style="margin:0 18px;">
+      <h3>💬 چت آنلاین با مشاور</h3>
+      <p>سوالی داشتی از من بپرس — همین حالا با مشاوران مرکز دانشجویار گفتگوی زنده داشته باش.</p>
+      <button onclick="window.open(CONFIG.chatUrl,'_blank')">سوالی داشتی از من بپرس</button>
+    </div>
+    <div class="note-box">این گفتگو در یک پنجره جدید باز می‌شود و مستقیماً به مشاوران مرکز متصل می‌شوید.</div>
+  </section>
+
+  <!-- NEWS -->
+  <section class="screen" id="screen-news">
+    <div class="section-title">اخبار و اطلاعیه‌ها</div>
+    <div class="empty-state">
+      <div style="font-size:34px; margin-bottom:10px;">📰</div>
+      بخش اخبار به‌زودی فعال می‌شود.<br>اطلاعیه‌های جدید دانشگاه آزاد اسلامی در نسخه‌های بعدی اینجا نمایش داده خواهند شد.
+    </div>
+  </section>
+
+  <!-- VIDEOS -->
+  <section class="screen" id="screen-videos"></section>
+
+  <!-- FAVORITES -->
+  <section class="screen" id="screen-favorites">
+    <div class="section-title">رشته‌های مورد علاقه</div>
+    <div class="major-list" id="favList"></div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="screen" id="screen-contact">
+    <div class="section-title">تماس با مشاور</div>
+    <button class="link-btn primary" style="width:100%; border:none;" onclick="window.open(CONFIG.chatUrl,'_blank')">💬 سوالی داشتی از من بپرس (چت آنلاین)</button>
+    <div class="contact-card">
+      <div class="avatar">دق</div>
+      <div class="info"><h4>دکتر قریشی</h4><a href="tel:09933003908">۰۹۹۳۳۰۰۳۹۰۸</a></div>
+    </div>
+    <div class="contact-card">
+      <div class="avatar">خا</div>
+      <div class="info"><h4>خانم امینی <span style="font-weight:500; color:var(--ink-faint); font-size:11.5px;">— کارشناس ثبت‌نام</span></h4><a href="tel:09903078403">۰۹۹۰۳۰۷۸۴۰۳</a></div>
+    </div>
+    <div class="contact-card">
+      <div class="avatar">صپ</div>
+      <div class="info"><h4>خانم صفارپیشه <span style="font-weight:500; color:var(--ink-faint); font-size:11.5px;">— کارشناس ثبت‌نام</span></h4><a href="tel:09037802105">۰۹۰۳۷۸۰۲۱۰۵</a></div>
+    </div>
+
+    <div class="section-title">دفتر هدایت تحصیلی</div>
+    <div class="field">
+      <div class="flabel">آدرس</div>
+      <p>سنندج، سه‌راه ادب، جنب دانشگاه آزاد اسلامی — دانشجویار</p>
+    </div>
+    <div class="field">
+      <div class="flabel">تلفن دفتر</div>
+      <p><a href="tel:08733240565">۰۸۷۳۳۲۴۰۵۶۵</a> — <a href="tel:08733240549">۰۸۷۳۳۲۴۰۵۴۹</a></p>
+    </div>
+
+    <div class="section-title">پیوندهای مفید</div>
+    <a class="link-btn primary" href="#" id="registerLink" target="_blank" rel="noopener">پیش‌ثبت‌نام دانشگاه آزاد اسلامی</a>
+    <a class="link-btn" href="https://daneshjoyar.com" target="_blank" rel="noopener">سایت معرفی رشته‌ها — daneshjoyar.com</a>
+    <a class="link-btn insta" href="https://instagram.com/daneshjouiar" target="_blank" rel="noopener">اینستاگرام daneshjouiar@</a>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="screen" id="screen-about">
+    <div class="section-title">درباره ما</div>
+    <div class="field">
+      <p>مرکز هدایت تحصیلی دانشجویار دکتر قریشی با هدف معرفی رشته‌های دانشگاه آزاد اسلامی، هدایت تحصیلی، مشاوره انتخاب رشته و ارائه اطلاعات کامل برای داوطلبان طراحی شده است.</p>
+    </div>
+    <div class="field">
+      <div class="flabel">شعار مرکز</div>
+      <p>«انتخابی آگاهانه، آینده‌ای موفق»</p>
+    </div>
+  </section>
+
+  <!-- ADMIN: local users log -->
+  <section class="screen" id="screen-admin"></section>
+
+</main>
+
+<footer class="appfoot">دانشجویار — مرکز هدایت تحصیلی دکتر قریشی</footer>
+
+<script>
+/* ============ تنظیمات قابل ویرایش ============ */
+const CONFIG = {
+  registrationUrl: "https://digiform.ir/cece40a05c",
+  chatUrl: "https://www.goftino.com/c/mFHHVN",
+  // رمز عبور ورود به پنل مدیریت کاربران (فقط خودتان باید این را بدانید).
+  // پیشنهاد می‌شود همین الان آن را به یک رمز دلخواه تغییر دهید.
+  adminPassword: "daneshjouyar-admin-2025",
+  // اگر می‌خواهید مشخصات کاربران (نام، نام خانوادگی، موبایل) در یک جدول مرکزی
+  // (مثلاً Google Sheet از طریق Google Apps Script یا سرویس‌هایی مثل Formspree)
+  // برای شما جمع‌آوری شود، آدرس وب‌هوک دریافت‌کننده را اینجا قرار دهید.
+  // در غیر این صورت، اطلاعات فقط روی همان گوشی کاربر ذخیره می‌شود.
+  leadWebhookUrl: "https://script.google.com/macros/s/AKfycbz6mkIN-lwO5J3w_ym9BwAbTi5IKgabCG06f6eC0zX2HIIs9hFEbdzj1WNhiXw8cZQ/exec",
+};
+
+/* ============ داده رشته‌ها ============ */
+const ICONS = {
+  computer: `<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="14" y="14" width="20" height="20" rx="1"/><rect x="19" y="19" width="10" height="10" rx="1"/><path d="M14 20H8M14 28H8M40 20H34M40 28H34M20 14V8M28 14V8M20 40V34M28 40V34"/></svg>`,
+  electrical: `<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M26 6 L14 26 H22 L20 42 L36 20 H26 L26 6Z" stroke-linejoin="round"/></svg>`,
+  mechanical: `<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="24" cy="24" r="7"/><path d="M24 8v4M24 36v4M8 24h4M36 24h4M12.5 12.5l2.8 2.8M32.7 32.7l2.8 2.8M12.5 35.5l2.8-2.8M32.7 15.3l2.8-2.8"/></svg>`,
+  civil: `<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 38h36"/><path d="M10 38V22l7-8 7 8v16M24 38V22l7-8 7 8v16"/></svg>`,
+  industrial: `<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="6" y="10" width="9" height="9" rx="1"/><rect x="20" y="10" width="9" height="9" rx="1"/><rect x="34" y="10" width="9" height="9" rx="1"/><path d="M10.5 19v6a3 3 0 003 3h6.5v6M24.5 19v6a3 3 0 003 3h0M38.5 19v6a3 3 0 01-3 3h-6.5v6"/><rect x="15" y="34" width="9" height="9" rx="1"/></svg>`
+};
+
+const MAJORS = [
+  {
+    slug:"computer", name:"مهندسی کامپیوتر", color:"#2FA39C", icon:ICONS.computer,
+    tagline:"نرم‌افزار، سخت‌افزار و هوش مصنوعی",
+    overview:"این رشته دانشجو را با مبانی طراحی و ساخت نرم‌افزار و سامانه‌های سخت‌افزاری آشنا می‌کند؛ از منطق برنامه‌نویسی و ساختمان داده تا شبکه، پایگاه داده و هوش مصنوعی.",
+    goal:"تربیت نیروی متخصص برای طراحی، توسعه و نگهداری سامانه‌های نرم‌افزاری و سخت‌افزاری.",
+    duration:"۴ سال (۸ نیمسال تحصیلی) در مقطع کارشناسی پیوسته.",
+    branches:["نرم‌افزار","سخت‌افزار","فناوری اطلاعات"],
+    courses:["ساختمان داده‌ها و الگوریتم‌ها","مدارهای منطقی و معماری کامپیوتر","پایگاه داده و طراحی سیستم‌ها","شبکه‌های کامپیوتری","مهندسی نرم‌افزار و مبانی هوش مصنوعی"],
+    skills:["تفکر منطقی و حل مسئله","دقت در جزئیات فنی","یادگیری مداوم فناوری‌های جدید","کار تیمی در پروژه‌های نرم‌افزاری"],
+    software:["زبان‌های برنامه‌نویسی (Python، Java، C++)","ابزارهای مدیریت پایگاه داده","محیط‌های توسعه (VS Code، Git)"],
+    jobMarket:"توسعه نرم‌افزار و اپلیکیشن، مدیریت شبکه، تحلیل داده، امنیت اطلاعات و طراحی وب از پرتقاضاترین حوزه‌های شغلی این رشته هستند.",
+    continuation:"امکان ادامه تحصیل در مقاطع کارشناسی‌ارشد و دکتری در گرایش‌های مختلف مهندسی کامپیوتر و فناوری اطلاعات وجود دارد.",
+    universities:["سنندج","مریوان","قروه","سقز"],
+    personality:["علاقه‌مند به فناوری و تحلیل منطقی","صبور در حل مسائل پیچیده","علاقه‌مند به یادگیری مستمر"],
+    advantages:["بازار کار گسترده و رو به رشد","امکان دورکاری و فریلنسری","تنوع بالای مسیرهای شغلی"],
+    challenges:["نیاز به به‌روزرسانی مداوم دانش","رقابت بالا در بازار کار","نیاز به تمرین عملی مستمر"],
+    summary:"مهندسی کامپیوتر انتخابی مناسب برای علاقه‌مندان به فناوری، برنامه‌نویسی و حل مسائل منطقی است که بازار کار پویا و متنوعی پیش‌رو دارد.",
+    faq:[
+      {q:"آیا این رشته بازار کار خوبی دارد؟", a:"بله، مهندسی کامپیوتر یکی از رشته‌های پرتقاضا در بازار کار امروز است، به‌ویژه در حوزه‌های نرم‌افزار و داده."},
+      {q:"امکان ادامه تحصیل تا دکتری وجود دارد؟", a:"بله، مسیر کارشناسی تا دکتری در این رشته کاملاً امکان‌پذیر است."},
+      {q:"این رشته برای چه افرادی مناسب است؟", a:"برای افرادی که به فناوری، منطق و حل مسئله علاقه دارند و از یادگیری مداوم لذت می‌برند."}
+    ]
+  },
+  {
+    slug:"electrical", name:"مهندسی برق", color:"#D6A93B", icon:ICONS.electrical,
+    tagline:"قدرت، الکترونیک و مخابرات",
+    overview:"دانشجویان این رشته با مدارهای الکتریکی و الکترونیکی، سیستم‌های قدرت، کنترل و مخابرات آشنا می‌شوند.",
+    goal:"تربیت مهندسانی توانمند در طراحی، تحلیل و بهره‌برداری از سامانه‌های الکتریکی و الکترونیکی.",
+    duration:"۴ سال (۸ نیمسال تحصیلی) در مقطع کارشناسی پیوسته.",
+    branches:["قدرت","الکترونیک","کنترل","مخابرات"],
+    courses:["مدارهای الکتریکی و الکترونیکی","ماشین‌های الکتریکی","سیستم‌های کنترل خطی","الکترونیک قدرت","مخابرات و پردازش سیگنال"],
+    skills:["تحلیل ریاضی و فیزیکی قوی","دقت در کار با تجهیزات فنی","توانایی عیب‌یابی سیستم‌ها"],
+    software:["نرم‌افزارهای شبیه‌سازی مدار (مانند MATLAB)","ابزارهای طراحی PCB","نرم‌افزارهای کنترل صنعتی"],
+    jobMarket:"صنایع برق و انرژی، اتوماسیون صنعتی، طراحی مدار، نگهداری تجهیزات الکتریکی و مخابرات از حوزه‌های اصلی اشتغال هستند.",
+    continuation:"امکان ادامه تحصیل در مقاطع کارشناسی‌ارشد و دکتری در گرایش‌های قدرت، الکترونیک، کنترل و مخابرات وجود دارد.",
+    universities:["سنندج","مریوان","قروه","سقز"],
+    personality:["علاقه‌مند به فیزیک و ریاضیات","دقیق و منظم در کار عملی","علاقه‌مند به کار با تجهیزات فنی"],
+    advantages:["تقاضای پایدار در صنایع مختلف","تنوع گرایش‌های تخصصی","کاربرد گسترده در زندگی روزمره"],
+    challenges:["حجم بالای مباحث ریاضی و فیزیک","نیاز به کار عملی و آزمایشگاهی زیاد"],
+    summary:"مهندسی برق برای علاقه‌مندان به فیزیک، مدار و سیستم‌های فنی گزینه‌ای با کاربرد گسترده در صنعت است.",
+    faq:[
+      {q:"آیا این رشته بازار کار خوبی دارد؟", a:"بله، به‌ویژه در صنایع برق، انرژی و اتوماسیون صنعتی تقاضای پایداری وجود دارد."},
+      {q:"امکان ادامه تحصیل تا دکتری وجود دارد؟", a:"بله، در گرایش‌های مختلف این رشته امکان ادامه تحصیل تا دکتری وجود دارد."},
+      {q:"این رشته برای چه افرادی مناسب است؟", a:"برای افرادی با علاقه به فیزیک، ریاضیات و کار با تجهیزات فنی مناسب است."}
+    ]
+  },
+  {
+    slug:"mechanical", name:"مهندسی مکانیک", color:"#5A88B8", icon:ICONS.mechanical,
+    tagline:"طراحی، ساخت و سیستم‌های حرارتی",
+    overview:"این رشته به تحلیل، طراحی و ساخت سیستم‌های مکانیکی، حرارتی و سیالاتی می‌پردازد.",
+    goal:"تربیت مهندسانی مسلط بر طراحی، تحلیل و ساخت قطعات و ماشین‌آلات صنعتی.",
+    duration:"۴ سال (۸ نیمسال تحصیلی) در مقطع کارشناسی پیوسته.",
+    branches:["طراحی جامدات","حرارت و سیالات","ساخت و تولید"],
+    courses:["استاتیک و دینامیک","مقاومت مصالح","ترمودینامیک و مکانیک سیالات","طراحی اجزای ماشین","نقشه‌کشی صنعتی و CAD/CAM"],
+    skills:["تجسم فضایی و طراحی فنی","تحلیل ریاضی و فیزیکی","دقت در محاسبات مهندسی"],
+    software:["نرم‌افزارهای طراحی CAD","ابزارهای شبیه‌سازی مهندسی","نرم‌افزارهای تحلیل حرارتی و سیالاتی"],
+    jobMarket:"صنایع تولیدی، طراحی قطعات و ماشین‌آلات، خودروسازی، تاسیسات حرارتی و برودتی و نظارت فنی از مسیرهای اصلی این رشته است.",
+    continuation:"امکان ادامه تحصیل در مقاطع کارشناسی‌ارشد و دکتری در گرایش‌های مختلف مکانیک وجود دارد.",
+    universities:["سنندج","مریوان","قروه","سقز"],
+    personality:["علاقه‌مند به طراحی و ساخت","تجسم فضایی قوی","دقیق در محاسبات فنی"],
+    advantages:["کاربرد گسترده در صنایع مختلف","تنوع بالای مسیرهای شغلی","پایه‌ای برای بسیاری از رشته‌های مهندسی دیگر"],
+    challenges:["حجم بالای محاسبات فنی","نیاز به کار عملی در کارگاه و آزمایشگاه"],
+    summary:"مهندسی مکانیک انتخابی مناسب برای علاقه‌مندان به طراحی، ساخت و سیستم‌های صنعتی با کاربردی گسترده است.",
+    faq:[
+      {q:"آیا این رشته بازار کار خوبی دارد؟", a:"بله، به‌ویژه در صنایع تولیدی و خودروسازی تقاضای مستمری وجود دارد."},
+      {q:"امکان ادامه تحصیل تا دکتری وجود دارد؟", a:"بله، این رشته مسیر کامل تا دکتری را در گرایش‌های مختلف دارد."},
+      {q:"این رشته برای چه افرادی مناسب است؟", a:"برای افراد علاقه‌مند به طراحی، ساخت و حل مسائل فنی و صنعتی."}
+    ]
+  },
+  {
+    slug:"civil", name:"مهندسی عمران", color:"#B07C52", icon:ICONS.civil,
+    tagline:"سازه، راه و زیرساخت",
+    overview:"مهندسی عمران به طراحی، محاسبه و اجرای سازه‌ها، ساختمان‌ها، راه‌ها و زیرساخت‌های عمرانی می‌پردازد.",
+    goal:"تربیت مهندسانی توانمند در طراحی، اجرا و نظارت بر پروژه‌های ساختمانی و عمرانی.",
+    duration:"۴ سال (۸ نیمسال تحصیلی) در مقطع کارشناسی پیوسته.",
+    branches:["سازه","راه و ترابری","مهندسی آب"],
+    courses:["استاتیک و مقاومت مصالح","مکانیک خاک و پی","سازه‌های بتن‌آرمه و فولادی","نقشه‌برداری","مدیریت و برنامه‌ریزی پروژه"],
+    skills:["دقت در محاسبات سازه‌ای","توانایی مدیریت پروژه","کار میدانی و نظارت اجرایی"],
+    software:["نرم‌افزارهای طراحی و تحلیل سازه","ابزارهای نقشه‌کشی مهندسی","نرم‌افزارهای مدیریت پروژه"],
+    jobMarket:"طراحی سازه، نظارت و اجرای ساختمان، پیمانکاری عمرانی، مشاوره فنی و مدیریت پروژه از مسیرهای اصلی اشتغال هستند.",
+    continuation:"امکان ادامه تحصیل در مقاطع کارشناسی‌ارشد و دکتری در گرایش‌های سازه، آب، راه و مدیریت ساخت وجود دارد.",
+    universities:["سنندج","مریوان","قروه","سقز"],
+    personality:["علاقه‌مند به ساخت‌وساز و پروژه‌های عمرانی","دقیق در محاسبات فنی","توانایی کار میدانی"],
+    advantages:["تقاضای پیوسته در پروژه‌های ساختمانی","امکان فعالیت مستقل به‌عنوان پیمانکار یا مشاور","کاربرد گسترده در توسعه شهری"],
+    challenges:["نیاز به حضور میدانی در کارگاه‌های ساختمانی","حساسیت بالای مسئولیت فنی و ایمنی"],
+    summary:"مهندسی عمران برای علاقه‌مندان به طراحی و اجرای پروژه‌های ساختمانی و زیرساختی گزینه‌ای پایدار و پرکاربرد است.",
+    faq:[
+      {q:"آیا این رشته بازار کار خوبی دارد؟", a:"بله، به‌ویژه در حوزه ساخت‌وساز و پروژه‌های زیرساختی تقاضای پیوسته‌ای دارد."},
+      {q:"امکان ادامه تحصیل تا دکتری وجود دارد؟", a:"بله، در گرایش‌های مختلف عمران امکان ادامه تحصیل تا دکتری وجود دارد."},
+      {q:"این رشته برای چه افرادی مناسب است؟", a:"برای افراد علاقه‌مند به ساخت‌وساز، محاسبات فنی و کار میدانی مناسب است."}
+    ]
+  },
+  {
+    slug:"industrial", name:"مهندسی صنایع", color:"#8F6B8F", icon:ICONS.industrial,
+    tagline:"بهینه‌سازی و مدیریت سیستم‌ها",
+    overview:"مهندسی صنایع بر بهبود و بهینه‌سازی سیستم‌های تولیدی و خدماتی تمرکز دارد؛ ترکیبی از دانش فنی، مدیریت و آمار.",
+    goal:"تربیت مهندسانی توانمند در تحلیل، بهینه‌سازی و مدیریت سیستم‌های تولیدی و سازمانی.",
+    duration:"۴ سال (۸ نیمسال تحصیلی) در مقطع کارشناسی پیوسته.",
+    branches:["برنامه‌ریزی و تحلیل سیستم‌ها","تولید صنعتی"],
+    courses:["تحقیق در عملیات","کنترل کیفیت آماری","برنامه‌ریزی و کنترل تولید","اقتصاد مهندسی","طراحی سیستم‌های کار و زمان‌سنجی"],
+    skills:["تفکر تحلیلی و آماری","توانایی مدیریت و برنامه‌ریزی","دید سیستمی به فرآیندها"],
+    software:["نرم‌افزارهای تحلیل آماری","ابزارهای شبیه‌سازی فرآیند","نرم‌افزارهای مدیریت پروژه و منابع"],
+    jobMarket:"برنامه‌ریزی تولید، مدیریت کیفیت، لجستیک و زنجیره تامین، مشاوره سازمانی و تحلیل کسب‌وکار مسیرهای اصلی این رشته هستند.",
+    continuation:"امکان ادامه تحصیل در مقاطع کارشناسی‌ارشد و دکتری در گرایش‌های مختلف مهندسی صنایع و مدیریت سیستم وجود دارد.",
+    universities:["سنندج","مریوان","قروه","سقز"],
+    personality:["علاقه‌مند به تحلیل داده و آمار","دید سیستمی و مدیریتی","توانایی سازمان‌دهی فرآیندها"],
+    advantages:["کاربرد در تقریباً همه صنایع و سازمان‌ها","ترکیب دانش فنی و مدیریتی","مسیر مناسب برای ورود به مدیریت"],
+    challenges:["نیاز به تسلط هم‌زمان بر مباحث فنی و مدیریتی","کاربردی‌بودن دروس وابسته به تجربه عملی"],
+    summary:"مهندسی صنایع برای علاقه‌مندان به بهینه‌سازی، تحلیل سیستم‌ها و مدیریت فرآیندها انتخابی میان‌رشته‌ای و کاربردی است.",
+    faq:[
+      {q:"آیا این رشته بازار کار خوبی دارد؟", a:"بله، به دلیل کاربرد گسترده در صنایع و سازمان‌های مختلف، فرصت‌های شغلی متنوعی دارد."},
+      {q:"امکان ادامه تحصیل تا دکتری وجود دارد؟", a:"بله، در گرایش‌های مختلف مهندسی صنایع امکان ادامه تحصیل تا دکتری وجود دارد."},
+      {q:"این رشته برای چه افرادی مناسب است؟", a:"برای افراد علاقه‌مند به تحلیل، آمار، مدیریت و بهینه‌سازی فرآیندها مناسب است."}
+    ]
+  }
+];
+
+/* ============ خوشه‌های رشته برای تست هدایت تحصیلی ============ */
+const QUIZ_FIELDS = {
+  computer:{label:"مهندسی کامپیوتر و فناوری اطلاعات", rich:true},
+  electrical:{label:"مهندسی برق و الکترونیک", rich:true},
+  mechanical:{label:"مهندسی مکانیک", rich:true},
+  civil:{label:"مهندسی عمران و معماری", rich:true},
+  industrial:{label:"مهندسی صنایع", rich:true},
+  science:{label:"علوم پایه (شیمی، زیست‌شناسی، آمار)", search:"شیمی"},
+  agri:{label:"کشاورزی، دامپزشکی و محیط‌زیست", search:"کشاورزی و دامپزشکی"},
+  management:{label:"مدیریت، اقتصاد و حسابداری", search:"مدیریت"},
+  law:{label:"حقوق و علوم قضایی", search:"حقوق"},
+  psychology:{label:"روان‌شناسی و مشاوره", search:"روان‌شناسی"},
+  education:{label:"علوم تربیتی و آموزش", search:"آموزش"},
+  language:{label:"زبان و ادبیات", search:"زبان"},
+  social:{label:"علوم اجتماعی (جامعه‌شناسی، مردم‌شناسی)", search:"جامعه‌شناسی"},
+  art:{label:"هنر (نقاشی، گرافیک، سینما، نمایش)", search:"هنر"},
+  sport:{label:"تربیت بدنی و علوم ورزشی", search:"ورزشی"},
+};
+
+/* ============ سوالات تست هدایت تحصیلی ============ */
+const QUIZ = [
+  {q:"کدام درس دبیرستان را بیشتر دوست داشتی؟", opts:[
+    {t:"ریاضی و فیزیک (مدار و انرژی)", slug:"electrical"},
+    {t:"زیست‌شناسی و شیمی", slug:"science"},
+    {t:"ادبیات فارسی و انشا", slug:"language"},
+    {t:"علوم اجتماعی و تاریخ", slug:"social"}
+  ]},
+  {q:"تعطیلات آخر هفته را ترجیح می‌دی چطور بگذرونی؟", opts:[
+    {t:"ساختن یا تعمیر یک وسیله", slug:"mechanical"},
+    {t:"طراحی یا نقاشی کردن", slug:"art"},
+    {t:"مطالعه کتاب‌های روان‌شناسی", slug:"psychology"},
+    {t:"رسیدگی به حساب‌وکتاب شخصی یا خانوادگی", slug:"management"}
+  ]},
+  {q:"توی یک بحث گروهی، معمولاً چه نقشی داری؟", opts:[
+    {t:"کسی که استدلال منطقی و قانونی می‌آورد", slug:"law"},
+    {t:"کسی که احساسات بقیه را درک می‌کند", slug:"psychology"},
+    {t:"کسی که برنامه و بودجه را مدیریت می‌کند", slug:"management"},
+    {t:"کسی که راه‌حل فنی پیشنهاد می‌دهد", slug:"computer"}
+  ]},
+  {q:"دوست داری در آینده در چه محیطی کار کنی؟", opts:[
+    {t:"دفتر نرم‌افزاری یا شرکت فناوری", slug:"computer"},
+    {t:"مزرعه، دامداری یا محیط طبیعت", slug:"agri"},
+    {t:"دادگاه یا دفتر وکالت", slug:"law"},
+    {t:"مدرسه یا مرکز آموزشی", slug:"education"}
+  ]},
+  {q:"کدام فعالیت برایت جذاب‌تر است؟", opts:[
+    {t:"طراحی سازه یا نقشه ساختمان", slug:"civil"},
+    {t:"نوشتن داستان یا شعر", slug:"language"},
+    {t:"کار با حیوانات یا گیاهان", slug:"agri"},
+    {t:"تحلیل رفتار و افکار آدم‌ها", slug:"psychology"}
+  ]},
+  {q:"کدام مهارت را در خودت قوی‌تر می‌دانی؟", opts:[
+    {t:"تفکر تحلیلی و آماری", slug:"industrial"},
+    {t:"بیان و متقاعدسازی", slug:"law"},
+    {t:"همدلی و گوش‌دادن فعال", slug:"psychology"},
+    {t:"ذوق هنری و خلاقیت بصری", slug:"art"}
+  ]},
+  {q:"با کدام ابزار کار کردن برایت لذت‌بخش‌تر است؟", opts:[
+    {t:"کامپیوتر و نرم‌افزارهای کدنویسی", slug:"computer"},
+    {t:"مولتی‌متر و تجهیزات برق", slug:"electrical"},
+    {t:"قلم‌مو، نرم‌افزار طراحی یا دوربین", slug:"art"},
+    {t:"دفتر حساب و صورت‌های مالی", slug:"management"}
+  ]},
+  {q:"کدام حوزه از اخبار برایت جذاب‌تر است؟", opts:[
+    {t:"هوش مصنوعی و اپلیکیشن‌های جدید", slug:"computer"},
+    {t:"قوانین و پرونده‌های حقوقی", slug:"law"},
+    {t:"سلامت روان و مشاوره", slug:"psychology"},
+    {t:"کشاورزی پایدار و محیط‌زیست", slug:"agri"}
+  ]},
+  {q:"اگر بخوای به یک دوست کمک کنی، چیکار می‌کنی؟", opts:[
+    {t:"مشکلش را گوش می‌دهم و راهنمایی می‌کنم", slug:"psychology"},
+    {t:"کمکش می‌کنم بودجه‌اش را مدیریت کند", slug:"management"},
+    {t:"برایش یک برنامه یا ابزار می‌سازم", slug:"computer"},
+    {t:"توی نوشتن یا ترجمه متنش کمکش می‌کنم", slug:"language"}
+  ]},
+  {q:"کدام درس دانشگاهی را بیشتر دوست داری بخوانی؟", opts:[
+    {t:"جامعه‌شناسی و فرهنگ", slug:"social"},
+    {t:"تربیت بدنی و علوم ورزشی", slug:"sport"},
+    {t:"حقوق مدنی و کیفری", slug:"law"},
+    {t:"مدیریت و اقتصاد", slug:"management"}
+  ]},
+  {q:"در حل یک مسئله پیچیده، معمولاً چه‌کار می‌کنی؟", opts:[
+    {t:"آن را به مراحل منطقی و کد تبدیل می‌کنم", slug:"computer"},
+    {t:"داده‌ها را با آمار تحلیل می‌کنم", slug:"industrial"},
+    {t:"از قوانین و رویه‌های موجود استفاده می‌کنم", slug:"law"},
+    {t:"از تجربه‌های انسانی و روانی کمک می‌گیرم", slug:"psychology"}
+  ]},
+  {q:"کدام یک بیشتر توصیف‌کننده توست؟", opts:[
+    {t:"«دوست دارم چیزهای دیجیتال بسازم»", slug:"computer"},
+    {t:"«دوست دارم طبیعت و حیوانات را درک کنم»", slug:"agri"},
+    {t:"«دوست دارم آدم‌ها را بفهمم»", slug:"psychology"},
+    {t:"«دوست دارم زبان و ادبیات یاد بگیرم»", slug:"language"}
+  ]},
+  {q:"در بازدید از یک مکان جدید، به کدام بخش بیشتر توجه می‌کنی؟", opts:[
+    {t:"معماری و طراحی ساختمان‌ها", slug:"civil"},
+    {t:"فرهنگ و آداب‌ورسوم مردم", slug:"social"},
+    {t:"فضای ورزشی و امکاناتش", slug:"sport"},
+    {t:"آثار هنری و گالری‌ها", slug:"art"}
+  ]},
+  {q:"کدام یک برایت مهم‌تر است؟", opts:[
+    {t:"نوآوری در فناوری", slug:"computer"},
+    {t:"عدالت و رعایت قانون", slug:"law"},
+    {t:"سلامت روانی جامعه", slug:"psychology"},
+    {t:"آموزش و رشد نسل آینده", slug:"education"}
+  ]},
+  {q:"اگر یک روز تعطیل داشته باشی، ترجیح می‌دی چیکار کنی؟", opts:[
+    {t:"یک اپلیکیشن یا بازی کوچک بسازی", slug:"computer"},
+    {t:"یک مدار الکترونیکی سرگرمی بسازی", slug:"electrical"},
+    {t:"نقاشی یا عکاسی کنی", slug:"art"},
+    {t:"بروی باشگاه یا فعالیت ورزشی کنی", slug:"sport"}
+  ]},
+  {q:"در یک پروژه گروهی دانشگاهی، چه نقشی می‌گیری؟", opts:[
+    {t:"مسئول برنامه‌ریزی و هماهنگی فرآیندها", slug:"industrial"},
+    {t:"مسئول اجرای میدانی و نظارت", slug:"civil"},
+    {t:"مسئول تحقیق و نوشتن گزارش", slug:"language"},
+    {t:"مسئول تحلیل مالی پروژه", slug:"management"}
+  ]},
+  {q:"در کدام درس مدرسه بهتر از بقیه بودی؟", opts:[
+    {t:"ریاضی و هندسه", slug:"mechanical"},
+    {t:"عربی یا دینی", slug:"education"},
+    {t:"زبان انگلیسی", slug:"language"},
+    {t:"ورزش و تربیت بدنی", slug:"sport"}
+  ]},
+  {q:"کدام هدف شغلی برایت جذاب‌تر است؟", opts:[
+    {t:"مدیریت و بهینه‌سازی فرآیندهای یک سازمان", slug:"industrial"},
+    {t:"وکالت یا قضاوت", slug:"law"},
+    {t:"مشاوره روان‌شناسی یا خانواده", slug:"psychology"},
+    {t:"تدریس و آموزش", slug:"education"}
+  ]},
+  {q:"وقتی یک دستگاه خراب می‌شود، چه واکنشی داری؟", opts:[
+    {t:"دنبال باگ در نرم‌افزار می‌گردم", slug:"computer"},
+    {t:"مدار و اتصالات برقی‌اش را چک می‌کنم", slug:"electrical"},
+    {t:"قطعات مکانیکی‌اش را باز می‌کنم", slug:"mechanical"},
+    {t:"دنبال دلیل شیمیایی یا فیزیکی خرابی می‌گردم", slug:"science"}
+  ]},
+  {q:"کدام یک از این فعالیت‌ها را بیشتر دوست داری؟", opts:[
+    {t:"تحقیق درباره فرهنگ‌ها و جوامع مختلف", slug:"social"},
+    {t:"مراقبت و پرورش گیاه یا حیوان", slug:"agri"},
+    {t:"طراحی یک پوستر یا لوگو", slug:"art"},
+    {t:"محاسبه دخل‌وخرج یک کسب‌وکار", slug:"management"}
+  ]},
+  {q:"کدام مسیر شغلی بیشتر با آرزوهایت هم‌خوانی دارد؟", opts:[
+    {t:"مهندس نرم‌افزار یا متخصص هوش مصنوعی", slug:"computer"},
+    {t:"مهندس برق در نیروگاه یا مخابرات", slug:"electrical"},
+    {t:"مهندس مکانیک در صنعت خودرو", slug:"mechanical"},
+    {t:"مهندس عمران و مجری ساختمان", slug:"civil"}
+  ]},
+  {q:"کدام موضوع علمی یا عملی برایت جذاب‌تر است؟", opts:[
+    {t:"واکنش‌های شیمیایی و آزمایشگاهی", slug:"science"},
+    {t:"رشد گیاهان و پرورش دام", slug:"agri"},
+    {t:"تحلیل آماری داده‌های بزرگ", slug:"industrial"},
+    {t:"مطالعه رفتار اجتماعی انسان‌ها", slug:"social"}
+  ]},
+  {q:"در نهایت، آینده شغلی‌ات بیشتر حول چه محوری بچرخد؟", opts:[
+    {t:"علم و پژوهش آزمایشگاهی", slug:"science"},
+    {t:"هنر و خلاقیت بصری", slug:"art"},
+    {t:"ورزش و سلامت جسمانی", slug:"sport"},
+    {t:"زبان، ترجمه یا نویسندگی", slug:"language"}
+  ]}
+];
+
+/* ============ فهرست کامل رشته‌های دانشگاه (پذیرش بر اساس سوابق تحصیلی) ============ */
+const DEGREE_LABELS = {kardani:"کاردانی", peyvasteh:"کارشناسی پیوسته", napeyvasteh:"کارشناسی ناپیوسته"};
+const GRAD_ICON = `<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M24 10L4 18l20 8 20-8-20-8z"/><path d="M12 22v10c0 3 6 6 12 6s12-3 12-6V22"/><path d="M40 18v12"/></svg>`;
+let _gidx = 0;
+function G(name, degree, category){ return {slug:"g"+(_gidx++), name, degree, category: category||null}; }
+
+/* ============ ویدیوهای مشاوره‌ای ============ */
+// هر ویدیو را به این شکل اضافه کنید: {title:"عنوان", description:"توضیح کوتاه", url:"لینک ویدیو"}
+const VIDEOS = [
+  // نمونه: {title:"چطور رشته مناسب خودمون رو انتخاب کنیم؟", description:"سخنرانی دکتر قریشی درباره اصول انتخاب رشته", url:"https://..."},
+];
+
+const MAJORS_INDEX = [
+  // ===== کاردانی - آموزش معلمان =====
+  G("مربی بهداشت مدارس","kardani","آموزش معلمان"),
+  G("تربیت کودک","kardani","آموزش معلمان"),
+  G("آموزش زبان انگلیسی","kardani","آموزش معلمان"),
+  G("آموزش و پرورش ابتدایی","kardani","آموزش معلمان"),
+  G("آموزش دینی و عربی","kardani","آموزش معلمان"),
+  G("آموزش زبان و ادبیات فارسی","kardani","آموزش معلمان"),
+  G("آمار","kardani","آموزش معلمان"),
+  // ===== کاردانی - علوم انسانی =====
+  G("امور اداری","kardani","علوم انسانی"),
+  G("حسابداری","kardani","علوم انسانی"),
+  G("امور گمرکی","kardani","علوم انسانی"),
+  G("کاردانی حرفه‌ای امور دهیاری و شوراها","kardani","علوم انسانی"),
+  G("کاردانی حرفه‌ای تربیت بدنی - مربیگری پایه تیراندازی","kardani","علوم انسانی"),
+  G("کاردانی حرفه‌ای تربیت بدنی - مربیگری پایه شنا","kardani","علوم انسانی"),
+  G("علوم ورزشی (تربیت بدنی)","kardani","علوم انسانی"),
+  // ===== کاردانی - هنر =====
+  G("نقاشی","kardani","هنر"),
+  G("فتوگرافیک","kardani","هنر"),
+  G("گرافیک","kardani","هنر"),
+  G("انیمیشن","kardani","هنر"),
+  G("هنرهای نمایشی","kardani","هنر"),
+  G("سینما - تصویربرداری","kardani","هنر"),
+  G("معماری","kardani","هنر"),
+  G("کاردانی حرفه‌ای طلا و جواهرسازی - زیورآلات با دست","kardani","هنر"),
+  G("کاردانی حرفه‌ای صنایع دستی - مصنوعات سنگی","kardani","هنر"),
+  G("کاردانی حرفه‌ای مراقبت زیبایی پوست و مو","kardani","هنر"),
+  G("کاردانی حرفه‌ای صنایع دستی - فرش دستباف","kardani","هنر"),
+  G("کاردانی حرفه‌ای معماری - معماری داخلی","kardani","هنر"),
+  // ===== کاردانی - فنی و مهندسی =====
+  G("حرارت مرکزی و تهویه مطبوع","kardani","فنی و مهندسی"),
+  G("کاردان فنی الکترونیک","kardani","فنی و مهندسی"),
+  G("نرم‌افزار کامپیوتر","kardani","فنی و مهندسی"),
+  G("عمران","kardani","فنی و مهندسی"),
+  G("الکترونیک - رادیو و تلویزیون","kardani","فنی و مهندسی"),
+  G("الکترونیک عمومی","kardani","فنی و مهندسی"),
+  G("الکتروتکنیک","kardani","فنی و مهندسی"),
+  G("نقشه‌کشی صنعتی","kardani","فنی و مهندسی"),
+  G("صنایع شیمیایی","kardani","فنی و مهندسی"),
+  G("صنایع فلزی","kardani","فنی و مهندسی"),
+  G("نقشه‌برداری","kardani","فنی و مهندسی"),
+  G("مکانیک خودرو","kardani","فنی و مهندسی"),
+  G("کاردانی فنی عمران - منابع آب‌های سطحی","kardani","فنی و مهندسی"),
+  G("کاردانی فنی ممیزی انرژی - ساختمان","kardani","فنی و مهندسی"),
+  G("کاردانی فنی معدن - فرآوری سنگ‌های ساختمانی","kardani","فنی و مهندسی"),
+  G("کاردانی فنی معدن - فرآوری سنگ‌های تزئینی","kardani","فنی و مهندسی"),
+  G("کاردانی فنی عمران - شبکه و تصفیه‌خانه آب","kardani","فنی و مهندسی"),
+  // ===== کاردانی - کشاورزی و دامپزشکی =====
+  G("دامپزشکی","kardani","کشاورزی و دامپزشکی"),
+  G("تکنولوژی آبیاری","kardani","کشاورزی و دامپزشکی"),
+  G("تکنولوژی شیلات","kardani","کشاورزی و دامپزشکی"),
+  G("تکنولوژی محیط‌زیست","kardani","کشاورزی و دامپزشکی"),
+  G("کاردانی فنی صنایع غذایی - شیر و فرآورده‌های لبنی","kardani","کشاورزی و دامپزشکی"),
+  G("کاردانی فنی دامپروری - پرورش زنبور عسل","kardani","کشاورزی و دامپزشکی"),
+  G("صنایع غذایی","kardani","کشاورزی و دامپزشکی"),
+  G("تکنولوژی مواد غذایی","kardani","کشاورزی و دامپزشکی"),
+  G("فناوری پرورش دام","kardani","کشاورزی و دامپزشکی"),
+
+  // ===== کارشناسی پیوسته =====
+  G("زبان و ادبیات انگلیسی","peyvasteh"),
+  G("آموزش زبان انگلیسی","peyvasteh"),
+  G("مترجمی زبان انگلیسی","peyvasteh"),
+  G("زبان و ادبیات فارسی","peyvasteh"),
+  G("جامعه‌شناسی","peyvasteh"),
+  G("مردم‌شناسی","peyvasteh"),
+  G("علوم تربیتی","peyvasteh"),
+  G("روان‌شناسی","peyvasteh"),
+  G("مشاوره","peyvasteh"),
+  G("حقوق","peyvasteh"),
+  G("علوم قضایی","peyvasteh"),
+  G("مدیریت بازرگانی","peyvasteh"),
+  G("حسابداری","peyvasteh"),
+  G("مدیریت کسب‌وکارهای کوچک","peyvasteh"),
+  G("مدیریت صنعتی","peyvasteh"),
+  G("اقتصاد","peyvasteh"),
+  G("مدیریت مالی","peyvasteh"),
+  G("مدیریت امور بانکی","peyvasteh"),
+  G("علوم ورزشی","peyvasteh"),
+  G("نقاشی","peyvasteh"),
+  G("کارگردانی نمایش","peyvasteh"),
+  G("مهندسی شیمی","peyvasteh"),
+  G("شیمی محض","peyvasteh"),
+  G("شیمی کاربردی","peyvasteh"),
+  G("میکروبیولوژی","peyvasteh"),
+  G("زیست‌شناسی سلولی و مولکولی","peyvasteh"),
+  {slug:"electrical", name:"مهندسی برق", degree:"peyvasteh", category:null, richSlug:"electrical"},
+  G("مهندسی پزشکی","peyvasteh"),
+  G("مهندسی شهرسازی","peyvasteh"),
+  G("مهندسی معماری","peyvasteh"),
+  {slug:"computer", name:"مهندسی کامپیوتر", degree:"peyvasteh", category:null, richSlug:"computer"},
+  G("علوم کامپیوتر","peyvasteh"),
+  {slug:"industrial", name:"مهندسی صنایع", degree:"peyvasteh", category:null, richSlug:"industrial"},
+  {slug:"mechanical", name:"مهندسی مکانیک", degree:"peyvasteh", category:null, richSlug:"mechanical"},
+  G("مهندسی فضای سبز","peyvasteh"),
+  G("مهندسی مکانیزاسیون کشاورزی","peyvasteh"),
+  {slug:"civil", name:"مهندسی عمران", degree:"peyvasteh", category:null, richSlug:"civil"},
+  G("مهندسی نقشه‌برداری","peyvasteh"),
+  G("مهندسی ماشین‌های صنایع غذایی","peyvasteh"),
+  G("مهندسی تولید و ژنتیک گیاهی","peyvasteh"),
+  G("علوم و مهندسی صنایع غذایی","peyvasteh"),
+  G("علوم و مهندسی آب","peyvasteh"),
+  G("مهندسی طبیعت","peyvasteh"),
+
+  // ===== کارشناسی ناپیوسته =====
+  G("علوم آزمایشگاهی دامپزشکی","napeyvasteh"),
+  G("آمار","napeyvasteh"),
+  G("آموزش زبان انگلیسی","napeyvasteh"),
+  G("آموزش دینی و عربی","napeyvasteh"),
+  G("آموزش و پرورش ابتدایی","napeyvasteh"),
+  G("تربیت دبیر تربیت بدنی و علوم ورزشی","napeyvasteh"),
+  G("تربیت بدنی و علوم ورزشی - مدیریت و برنامه‌ریزی","napeyvasteh"),
+  G("مهندسی حرفه‌ای کامپیوتر نرم‌افزار","napeyvasteh"),
+  G("مهندسی فناوری مکانیک - تاسیسات حرارتی و برودتی","napeyvasteh"),
+  G("مهندسی حرفه‌ای مکانیک خودرو","napeyvasteh"),
+  G("مهندسی حرفه‌ای ایمنی صنعتی","napeyvasteh"),
+  G("مهندسی فناوری عمران - نقشه‌برداری","napeyvasteh"),
+  G("مهندسی فناوری مکانیک - ماشین‌افزار","napeyvasteh"),
+  G("مهندسی تکنولوژی برق - قدرت","napeyvasteh"),
+  G("مهندسی فناوری بهره‌برداری نیروگاه","napeyvasteh"),
+  G("گرافیک","napeyvasteh"),
+  G("مهندسی حرفه‌ای معماری","napeyvasteh"),
+  G("نقاشی","napeyvasteh"),
+  G("مهندسی علوم و صنایع غذایی","napeyvasteh"),
+  G("مهندسی آبیاری","napeyvasteh"),
+  G("مهندسی حرفه‌ای مکانیک ماشین‌های کشاورزی","napeyvasteh"),
+  G("مهندسی منابع طبیعی - شیلات","napeyvasteh"),
+  G("مدیریت بازرگانی","napeyvasteh"),
+  G("مدیریت صنعتی","napeyvasteh"),
+  G("حقوق - حقوق ثبتی","napeyvasteh"),
+  G("حسابداری","napeyvasteh"),
+];
+
+/* ============ وضعیت برنامه ============ */
+let quizState = {index:0, scores:{}};
+let majorsFilter = "all";
+let history = ["home"];
+
+/* ============ ورود کاربر (نام، نام خانوادگی، موبایل) ============ */
+function getUser(){
+  try{ return JSON.parse(localStorage.getItem("djUser")); }catch(e){ return null; }
+}
+function submitGate(){
+  const first = document.getElementById("gFirst").value.trim();
+  const last = document.getElementById("gLast").value.trim();
+  const phone = document.getElementById("gPhone").value.trim();
+  const err = document.getElementById("gateError");
+
+  if(!first || !last){ err.textContent = "لطفاً نام و نام خانوادگی را کامل وارد کنید."; return; }
+  if(!/^09\d{9}$/.test(phone)){ err.textContent = "شماره موبایل را به‌درستی وارد کنید (مثال: 09123456789)."; return; }
+  err.textContent = "";
+
+  const entry = {firstName:first, lastName:last, phone:phone, ts:new Date().toISOString()};
+  localStorage.setItem("djUser", JSON.stringify(entry));
+
+  const log = JSON.parse(localStorage.getItem("djUsersLog")||"[]");
+  log.push(entry);
+  localStorage.setItem("djUsersLog", JSON.stringify(log));
+
+  if(CONFIG.leadWebhookUrl){
+    fetch(CONFIG.leadWebhookUrl, {
+      method:"POST", mode:"no-cors",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify(entry)
+    }).catch(()=>{});
+  }
+
+  document.getElementById("gate").style.display = "none";
+}
+
+function getFavs(){ return JSON.parse(localStorage.getItem("favs")||"[]"); }
+function setFavs(f){ localStorage.setItem("favs", JSON.stringify(f)); }
+function toggleFav(slug){
+  let f = getFavs();
+  if(f.includes(slug)) f = f.filter(s=>s!==slug); else f.push(slug);
+  setFavs(f);
+  render();
+}
+
+/* ============ تم ============ */
+function applyTheme(t){
+  document.documentElement.setAttribute("data-theme", t);
+  localStorage.setItem("theme", t);
+  document.getElementById("themeIcon").innerHTML = t==="dark"
+    ? '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>'
+    : '<path d="M12 3a9 9 0 109 9c0-.46-.04-.92-.1-1.36A5.4 5.4 0 0112 3z"/>';
+}
+function toggleTheme(){
+  const cur = document.documentElement.getAttribute("data-theme");
+  applyTheme(cur==="dark" ? "light" : "dark");
+}
+
+/* ============ ناوبری ============ */
+function navigate(hash, push=true){
+  if(push) history.push(hash);
+  location.hash = hash;
+  render();
+  window.scrollTo(0,0);
+}
+function goBack(){
+  history.pop();
+  const prev = history[history.length-1] || "home";
+  location.hash = prev;
+  render();
+  window.scrollTo(0,0);
+}
+
+const HOME_MENU = [
+  {icon:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10L12 5 2 10l10 5 10-5z"/><path d="M6 12v5c0 1.5 3 3 6 3s6-1.5 6-3v-5"/></svg>', label:"رشته‌های دانشگاه", hash:"majors"},
+  {icon:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>', label:"جستجوی رشته", hash:"search"},
+  {icon:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>', label:"تست هدایت تحصیلی", hash:"quiz"},
+  {icon:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>', label:"چت آنلاین با مشاور", hash:"livechat"},
+  {icon:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M8 6h8M8 10h8M8 14h4"/></svg>', label:"ماشین حساب شهریه", hash:"tuition"},
+  {icon:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M8 4v5"/></svg>', label:"اخبار و اطلاعیه‌ها", hash:"news"},
+  {icon:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>', label:"ویدیوهای مشاوره‌ای برای سوالات شما", hash:"videos"},
+  {icon:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.8 4.6a5.5 5.5 0 00-7.8 0L12 5.6l-1-1a5.5 5.5 0 10-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 000-7.8z"/></svg>', label:"رشته‌های مورد علاقه", hash:"favorites"},
+  {icon:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.9v3a2 2 0 01-2.2 2 19.8 19.8 0 01-8.6-3 19.5 19.5 0 01-6-6 19.8 19.8 0 01-3-8.7A2 2 0 014.1 2h3a2 2 0 012 1.7c.1 1 .3 2 .6 3a2 2 0 01-.5 2L8 10a16 16 0 006 6l1.3-1.3a2 2 0 012-.5c1 .3 2 .5 3 .6a2 2 0 011.7 2z"/></svg>', label:"تماس با مشاور", hash:"contact"},
+  {icon:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>', label:"درباره ما", hash:"about"},
+];
+
+function renderHomeMenu(){
+  document.getElementById("homeMenu").innerHTML = HOME_MENU.map(m=>`
+    <div class="menu-card" onclick="navigate('${m.hash}')">
+      <div class="mi">${m.icon}</div>
+      <span>${m.label}</span>
+    </div>`).join("");
+}
+
+function majorRow(m){
+  const isFav = getFavs().includes(m.slug);
+  return `<div class="major-row" onclick="navigate('major/${m.slug}')">
+    <div class="ic" style="color:${m.color}">${m.icon}</div>
+    <div class="info"><h3>${m.name}</h3><p>${m.tagline}</p></div>
+    <button class="fav-btn ${isFav?'active':''}" onclick="event.stopPropagation(); toggleFav('${m.slug}')" aria-label="علاقه‌مندی">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="${isFav?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M20.8 4.6a5.5 5.5 0 00-7.8 0L12 5.6l-1-1a5.5 5.5 0 10-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 000-7.8z"/></svg>
+    </button>
+    <svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg>
+  </div>`;
+}
+
+function indexRow(item){
+  if(item.richSlug){
+    const m = MAJORS.find(x=>x.slug===item.richSlug);
+    return majorRow(m);
+  }
+  const isFav = getFavs().includes(item.slug);
+  const meta = DEGREE_LABELS[item.degree] + (item.category ? " · "+item.category : "");
+  return `<div class="major-row" onclick="navigate('major/${item.slug}')">
+    <div class="ic" style="color:var(--ink-faint)">${GRAD_ICON}</div>
+    <div class="info"><h3>${item.name}</h3><p>${meta}</p></div>
+    <button class="fav-btn ${isFav?'active':''}" onclick="event.stopPropagation(); toggleFav('${item.slug}')" aria-label="علاقه‌مندی">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="${isFav?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M20.8 4.6a5.5 5.5 0 00-7.8 0L12 5.6l-1-1a5.5 5.5 0 10-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 000-7.8z"/></svg>
+    </button>
+    <svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg>
+  </div>`;
+}
+
+function setMajorsFilter(f){ majorsFilter = f; renderMajorsList(); }
+
+function renderMajorsList(){
+  const chips = [["all","همه"],["kardani","کاردانی"],["peyvasteh","کارشناسی پیوسته"],["napeyvasteh","کارشناسی ناپیوسته"]];
+  let html = `<div class="filter-chips">${chips.map(([v,l])=>
+    `<button class="fchip ${majorsFilter===v?'active':''}" onclick="setMajorsFilter('${v}')">${l}</button>`).join("")}</div>`;
+
+  const degreeOrder = majorsFilter==="all" ? ["kardani","peyvasteh","napeyvasteh"] : [majorsFilter];
+  degreeOrder.forEach(deg=>{
+    const items = MAJORS_INDEX.filter(i=>i.degree===deg);
+    if(!items.length) return;
+    html += `<div class="section-title">${DEGREE_LABELS[deg]} <span style="font-weight:500;color:var(--ink-faint);font-size:12px;">(${items.length} رشته)</span></div>`;
+    const cats = [...new Set(items.map(i=>i.category||"__none"))];
+    cats.forEach(cat=>{
+      const catItems = items.filter(i=>(i.category||"__none")===cat);
+      if(cat!=="__none") html += `<div class="cat-label">${cat}</div>`;
+      html += `<div class="major-list">${catItems.map(indexRow).join("")}</div>`;
+    });
+  });
+  document.getElementById("majorsListWrap").innerHTML = html;
+}
+
+function renderSearch(){
+  const q = (document.getElementById("searchInput").value||"").trim();
+  const el = document.getElementById("searchResults");
+  if(!q){ el.innerHTML = ""; return; }
+  const results = MAJORS_INDEX.filter(i => i.name.includes(q) || (i.category && i.category.includes(q)));
+  el.innerHTML = results.length ? results.map(indexRow).join("") : `<div class="empty-state">نتیجه‌ای برای «${q}» پیدا نشد.</div>`;
+}
+
+function renderFavorites(){
+  const favs = getFavs();
+  const items = MAJORS_INDEX.filter(i=>favs.includes(i.slug));
+  document.getElementById("favList").innerHTML = items.length ? items.map(indexRow).join("")
+    : `<div class="empty-state">هنوز رشته‌ای را به علاقه‌مندی‌ها اضافه نکرده‌اید.<br>روی آیکون قلب کنار هر رشته بزنید.</div>`;
+}
+
+function renderVideos(){
+  const el = document.getElementById("screen-videos");
+  el.innerHTML = `
+    <div class="section-title">ویدیوهای مشاوره‌ای برای سوالات شما</div>
+    ${VIDEOS.length ? VIDEOS.map(v=>`
+      <div class="field">
+        <div class="flabel">🎥 ${v.title}</div>
+        <p>${v.description||""}</p>
+        <div class="link-btn primary" style="margin:12px 0 0;" onclick="window.open('${v.url}','_blank')">پخش ویدیو</div>
+      </div>`).join("")
+    : `<div class="empty-state">
+        <div style="font-size:34px; margin-bottom:10px;">🎬</div>
+        به‌زودی ویدیوهای سخنرانی و مشاوره‌ای دکتر قریشی اینجا قرار می‌گیرد.
+      </div>`}
+  `;
+}
+
+function fieldBlock(label, content){
+  return `<div class="field"><div class="flabel">${label}</div>${content}</div>`;
+}
+function listField(label, arr){
+  return fieldBlock(label, `<ul>${arr.map(x=>`<li>${x}</li>`).join("")}</ul>`);
+}
+function chipField(label, arr){
+  return fieldBlock(label, `<div class="chip-wrap">${arr.map(x=>`<span class="chip">${x}</span>`).join("")}</div>`);
+}
+
+function renderMajorDetail(slug){
+  const m = MAJORS.find(x=>x.slug===slug);
+  if(m){ renderRichMajorDetail(m); return; }
+  const item = MAJORS_INDEX.find(x=>x.slug===slug);
+  if(item){ renderGenericMajorDetail(item); return; }
+  document.getElementById("screen-major").innerHTML = `<div class="empty-state">رشته پیدا نشد.</div>`;
+}
+
+function renderGenericMajorDetail(item){
+  const el = document.getElementById("screen-major");
+  const isFav = getFavs().includes(item.slug);
+  const durationMap = {kardani:"۲ سال (۴ نیمسال تحصیلی)", peyvasteh:"۴ سال (۸ نیمسال تحصیلی)", napeyvasteh:"۲ سال (۴ نیمسال تحصیلی)"};
+  el.innerHTML = `
+    <div class="detail-hero">
+      <div class="detail-top">
+        <div class="ic" style="color:var(--ink-faint)">${GRAD_ICON}</div>
+        <div><h2>${item.name}</h2><div class="sub">${DEGREE_LABELS[item.degree]}${item.category ? " · "+item.category : ""}</div></div>
+      </div>
+      <div class="detail-actions">
+        <button class="pill-btn ${isFav?'active':''}" onclick="toggleFav('${item.slug}')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="${isFav?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M20.8 4.6a5.5 5.5 0 00-7.8 0L12 5.6l-1-1a5.5 5.5 0 10-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 000-7.8z"/></svg>
+          ${isFav ? "در علاقه‌مندی‌ها" : "افزودن به علاقه‌مندی‌ها"}
+        </button>
+      </div>
+    </div>
+    ${fieldBlock("مقطع تحصیلی", `<p>${DEGREE_LABELS[item.degree]}${item.category ? " — دانشکده مهارت و کارآفرینی، حوزه "+item.category : ""}</p>`)}
+    ${fieldBlock("مدت دوره", `<p>${durationMap[item.degree]}</p>`)}
+    ${fieldBlock("شرایط پذیرش", `<p>پذیرش این رشته بدون کنکور و صرفاً بر اساس سوابق تحصیلی (معدل مدرک پایه) انجام می‌شود.</p>`)}
+    ${listField("مدارک لازم جهت ثبت‌نام", ["چند قطعه عکس پرسنلی","کپی تمام صفحات شناسنامه","گواهی موقت مدرک تحصیلی پایه"])}
+    <div class="note-box">اطلاعات تخصصی این رشته (سرفصل دروس، مهارت‌ها، بازار کار و ...) به‌زودی تکمیل می‌شود. برای مشاوره دقیق‌تر درباره این رشته با مرکز تماس بگیرید.</div>
+    <div class="cta-box">
+      <h3>🎯 مطمئن نیستی این رشته مناسب توئه؟</h3>
+      <p>تست رایگان هدایت تحصیلی را انجام بده تا رشته پیشنهادی‌ات را ببینی.</p>
+      <button onclick="navigate('quiz')">شروع تست رایگان</button>
+    </div>
+    <div class="link-btn primary" style="margin-top:14px;" onclick="window.open(CONFIG.chatUrl,'_blank')">💬 تماس مستقیم با مشاور درباره این رشته</div>
+  `;
+}
+
+function renderRichMajorDetail(m){
+  const el = document.getElementById("screen-major");
+  const isFav = getFavs().includes(m.slug);
+  el.innerHTML = `
+    <div class="detail-hero">
+      <div class="detail-top">
+        <div class="ic" style="color:${m.color}">${m.icon}</div>
+        <div><h2>${m.name}</h2><div class="sub">${m.tagline}</div></div>
+      </div>
+      <div class="detail-actions">
+        <button class="pill-btn ${isFav?'active':''}" onclick="toggleFav('${m.slug}')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="${isFav?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M20.8 4.6a5.5 5.5 0 00-7.8 0L12 5.6l-1-1a5.5 5.5 0 10-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 000-7.8z"/></svg>
+          ${isFav ? "در علاقه‌مندی‌ها" : "افزودن به علاقه‌مندی‌ها"}
+        </button>
+        <button class="pill-btn" onclick="shareMajor('${m.slug}')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 10.6l6.8-3.8M8.6 13.4l6.8 3.8"/></svg>
+          اشتراک‌گذاری
+        </button>
+      </div>
+    </div>
+    ${fieldBlock("معرفی رشته", `<p>${m.overview}</p>`)}
+    ${fieldBlock("هدف رشته", `<p>${m.goal}</p>`)}
+    ${fieldBlock("مدت دوره", `<p>${m.duration}</p>`)}
+    ${chipField("گرایش‌ها", m.branches)}
+    ${listField("دروس تخصصی", m.courses)}
+    ${listField("مهارت‌های موردنیاز", m.skills)}
+    ${listField("نرم‌افزارهای تخصصی", m.software)}
+    ${fieldBlock("بازار کار", `<p>${m.jobMarket}</p>`)}
+    ${fieldBlock("ادامه تحصیل", `<p>${m.continuation}</p>`)}
+    ${chipField("دانشگاه‌های ارائه‌دهنده (واحدهای آزاد اسلامی)", m.universities)}
+    ${listField("ویژگی‌های شخصیتی مناسب", m.personality)}
+    ${listField("مزایا", m.advantages)}
+    ${listField("چالش‌ها", m.challenges)}
+    ${fieldBlock("جمع‌بندی", `<p>${m.summary}</p>`)}
+    ${fieldBlock("سوالات متداول", `<div>${m.faq.map((f,i)=>`
+      <div class="faq-item">
+        <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+          ${f.q}
+          <svg class="chevd" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+        <div class="faq-a">${f.a}</div>
+      </div>`).join("")}</div>`)}
+    <div class="cta-box">
+      <h3>🎯 هنوز مطمئن نیستید؟</h3>
+      <p>اگر هنوز درباره انتخاب این رشته مطمئن نیستید، تست رایگان هدایت تحصیلی را انجام دهید.</p>
+      <button onclick="navigate('quiz')">شروع تست رایگان</button>
+    </div>
+    <div class="link-btn primary" style="margin:10px 18px 0;" onclick="window.open(CONFIG.chatUrl,'_blank')">💬 تماس مستقیم با مشاور درباره این رشته</div>
+  `;
+}
+
+function shareMajor(slug){
+  const m = MAJORS.find(x=>x.slug===slug);
+  const text = `معرفی رشته ${m.name} — دانشجویار، مرکز هدایت تحصیلی دکتر قریشی`;
+  if(navigator.share){ navigator.share({title:m.name, text}).catch(()=>{}); }
+  else { navigator.clipboard?.writeText(text); alert("متن معرفی رشته کپی شد."); }
+}
+
+/* ============ تست هدایت تحصیلی ============ */
+function startQuiz(){ quizState = {index:0, scores:{}}; renderQuiz(); }
+function renderQuiz(){
+  const el = document.getElementById("screen-quiz");
+  if(quizState.index >= QUIZ.length){ renderQuizResult(); return; }
+  const q = QUIZ[quizState.index];
+  const pct = Math.round((quizState.index/QUIZ.length)*100);
+  el.innerHTML = `
+    <div class="quiz-progress">
+      <div class="bar"><span style="width:${pct}%"></span></div>
+      <div class="lbl">سوال ${quizState.index+1} از ${QUIZ.length}</div>
+    </div>
+    <div class="quiz-q">
+      <h3>${q.q}</h3>
+      ${q.opts.map((o,i)=>`<button class="quiz-opt" onclick="answerQuiz('${o.slug}')">${o.t}</button>`).join("")}
+    </div>`;
+}
+function answerQuiz(slug){
+  quizState.scores[slug] = (quizState.scores[slug]||0)+1;
+  quizState.index++;
+  renderQuiz();
+}
+function quizAppearances(){
+  const counts = {};
+  QUIZ.forEach(q=>q.opts.forEach(o=>{ counts[o.slug] = (counts[o.slug]||0)+1; }));
+  return counts;
+}
+function renderQuizResult(){
+  const el = document.getElementById("screen-quiz");
+  const appearances = quizAppearances();
+  const results = Object.keys(QUIZ_FIELDS).map(slug=>{
+    const score = quizState.scores[slug]||0;
+    const total = appearances[slug]||1;
+    const pct = Math.round((score/total)*100);
+    return {slug, pct, score, label:QUIZ_FIELDS[slug].label};
+  }).filter(r=>r.score>0).sort((a,b)=> b.pct-a.pct || b.score-a.score);
+
+  if(!results.length){ el.innerHTML = `<div class="empty-state">نتیجه‌ای ثبت نشد. دوباره تلاش کنید.</div>`; return; }
+
+  const top = results[0];
+  const field = QUIZ_FIELDS[top.slug];
+  const linkAction = field.rich
+    ? `navigate('major/${top.slug}')`
+    : `navigate('search'); setTimeout(()=>{ const si=document.getElementById('searchInput'); si.value='${field.search}'; renderSearch(); }, 50)`;
+
+  const listHtml = results.slice(0,6).map(r=>`
+    <div style="margin-bottom:14px;">
+      <div style="display:flex; justify-content:space-between; font-size:13px; font-weight:700; margin-bottom:5px;">
+        <span>${r.pct}%</span><span>${r.label}</span>
+      </div>
+      <div style="height:8px; background:var(--line); border-radius:6px; overflow:hidden;">
+        <span style="display:block; height:100%; width:${r.pct}%; background:var(--gold); border-radius:6px;"></span>
+      </div>
+    </div>`).join("");
+
+  el.innerHTML = `
+    <div class="quiz-result">
+      <svg class="medal" viewBox="0 0 48 48" fill="none" stroke="var(--gold)" stroke-width="1.6"><circle cx="24" cy="18" r="10"/><path d="M18 26l-4 14 10-5 10 5-4-14"/></svg>
+      <h3>بیشترین تطابق شما</h3>
+      <h2>${top.label} — ${top.pct}٪</h2>
+      <button class="link-btn primary" style="display:inline-flex; width:auto; padding:12px 28px; margin:6px auto 22px;" onclick="${linkAction}">مشاهده رشته‌های مرتبط</button>
+    </div>
+    <div style="padding:0 18px; max-width:420px; margin:0 auto;">
+      <div class="cat-label" style="margin:0 0 14px;">درصد تطابق با سایر حوزه‌ها</div>
+      ${listHtml}
+    </div>
+    <div style="text-align:center; margin-top:10px;"><button class="pill-btn" onclick="startQuiz()" style="display:inline-flex;">تکرار تست</button></div>
+  `;
+}
+
+/* ============ ماشین حساب شهریه ============ */
+function fillTuitionSelect(){
+  document.getElementById("tRshte").innerHTML = MAJORS.map(m=>`<option value="${m.slug}">${m.name}</option>`).join("");
+}
+function calcTuition(){
+  const vahed = parseFloat(document.getElementById("tVahed").value)||0;
+  const price = parseFloat(document.getElementById("tPrice").value)||0;
+  const mag = parseFloat(document.getElementById("tMaghta").value)||1;
+  const total = Math.round(vahed*price*mag);
+  document.getElementById("tResult").textContent = total.toLocaleString("fa-IR")+" تومان";
+}
+
+/* ============ پنل مدیریت (لیست کاربران ثبت‌شده روی همین دستگاه) ============ */
+function checkAdminAccess(){
+  if(sessionStorage.getItem("djAdminUnlocked")==="1") return true;
+  const pass = prompt("این بخش فقط برای مدیر مرکز است.\nرمز عبور را وارد کنید:");
+  if(pass !== null && pass === CONFIG.adminPassword){
+    sessionStorage.setItem("djAdminUnlocked","1");
+    return true;
+  }
+  return false;
+}
+function renderAdmin(){
+  const el = document.getElementById("screen-admin");
+  if(!checkAdminAccess()){
+    el.innerHTML = `<div class="empty-state">🔒 دسترسی به این بخش فقط برای مدیر مرکز است.</div>`;
+    return;
+  }
+  const log = JSON.parse(localStorage.getItem("djUsersLog")||"[]");
+  const rows = log.map(u=>`
+    <div class="major-row" style="cursor:default;">
+      <div class="info">
+        <h3>${u.firstName} ${u.lastName}</h3>
+        <p>${u.phone} — ${new Date(u.ts).toLocaleString("fa-IR")}</p>
+      </div>
+    </div>`).join("");
+  el.innerHTML = `
+    <div class="section-title">کاربران ثبت‌شده روی این دستگاه (${log.length} نفر)</div>
+    <div class="note-box">این لیست فقط شامل کاربرانی است که از همین گوشی/مرورگر وارد شده‌اند. برای دیدن لیست کامل همه کاربران از همه دستگاه‌ها، Google Sheet متصل‌شده را باز کنید — جمع‌آوری مرکزی فعال است.</div>
+    ${log.length ? `<div class="link-btn primary" onclick="exportUsersCSV()">دانلود خروجی CSV</div>` : ""}
+    <div class="major-list">${rows || '<div class="empty-state">هنوز کاربری وارد نشده است.</div>'}</div>
+    <div class="link-btn" onclick="resetDeviceLogin()" style="margin-top:20px;">بازنشانی ورود این دستگاه (فقط برای تست)</div>
+  `;
+}
+function resetDeviceLogin(){
+  if(!confirm("اطلاعات ورود این دستگاه پاک شود؟ (فقط برای تست دوباره‌ی فرم ورود)")) return;
+  localStorage.removeItem("djUser");
+  location.reload();
+}
+function exportUsersCSV(){
+  const log = JSON.parse(localStorage.getItem("djUsersLog")||"[]");
+  let csv = "نام,نام خانوادگی,موبایل,تاریخ\n";
+  log.forEach(u=>{ csv += `${u.firstName},${u.lastName},${u.phone},${u.ts}\n`; });
+  const blob = new Blob(["\uFEFF"+csv], {type:"text/csv;charset=utf-8;"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url; a.download = "daneshjouyar-users.csv";
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+/* ============ روتر اصلی ============ */
+const TITLES = {
+  home:{t:"دانشجویار", s:"انتخابی آگاهانه، آینده‌ای موفق"},
+  majors:{t:"رشته‌های دانشگاه", s:""},
+  search:{t:"جستجوی رشته", s:""},
+  quiz:{t:"تست هدایت تحصیلی", s:""},
+  livechat:{t:"چت آنلاین با مشاور", s:""},
+  tuition:{t:"ماشین حساب شهریه", s:""},
+  news:{t:"اخبار و اطلاعیه‌ها", s:""},
+  favorites:{t:"رشته‌های مورد علاقه", s:""},
+  videos:{t:"ویدیوهای مشاوره‌ای برای سوالات شما", s:""},
+  contact:{t:"تماس با مشاور", s:""},
+  about:{t:"درباره ما", s:""},
+  admin:{t:"پنل مدیریت کاربران", s:""}
+};
+
+function render(){
+  const hash = (location.hash||"#home").replace("#","");
+  const parts = hash.split("/");
+  const screen = parts[0] || "home";
+
+  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+  const target = document.getElementById("screen-"+screen);
+  if(target) target.classList.add("active");
+
+  document.getElementById("backBtn").style.display = screen==="home" ? "none" : "flex";
+  const info = TITLES[screen] || {t:MAJORS.find(m=>m.slug===parts[1])?.name || "دانشجویار", s:""};
+  document.getElementById("pageTitle").innerHTML = info.t + (info.s ? `<small>${info.s}</small>` : "");
+
+  if(screen==="home") renderHomeMenu();
+  if(screen==="majors") renderMajorsList();
+  if(screen==="favorites") renderFavorites();
+  if(screen==="videos") renderVideos();
+  if(screen==="major") renderMajorDetail(parts[1]);
+  if(screen==="quiz") startQuiz();
+  if(screen==="admin") renderAdmin();
+  if(screen==="tuition"){ fillTuitionSelect(); calcTuition(); }
+}
+
+/* ============ راه‌اندازی ============ */
+// برای دیدن دوباره‌ی فرم ورود (فقط برای تست)، آدرس را با ?reset=1 در انتها باز کنید،
+// مثال: index.html?reset=1  یا  https://your-site.com/?reset=1
+if(new URLSearchParams(location.search).get("reset")==="1"){
+  localStorage.removeItem("djUser");
+}
+document.getElementById("registerLink").href = CONFIG.registrationUrl;
+applyTheme(localStorage.getItem("theme") || "light");
+if(getUser()){ document.getElementById("gate").style.display = "none"; }
+window.addEventListener("hashchange", render);
+if(!location.hash) location.hash = "home";
+render();
+setTimeout(()=>{ document.getElementById("splash").remove(); }, 2700);
+if("serviceWorker" in navigator){
+  window.addEventListener("load", ()=>{ navigator.serviceWorker.register("sw.js").catch(()=>{}); });
+}
+
+</script>
+</body>
+</html>
