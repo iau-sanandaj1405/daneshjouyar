@@ -1041,7 +1041,10 @@ function majorRow(m){
     <div class="ic" style="color:${m.color}">${m.icon}</div>
     <div class="info"><h3>${m.name}</h3><p>${m.tagline}</p></div>
     <button class="fav-btn ${isFav?'active':''}" onclick="event.stopPropagation(); toggleFav('${m.slug}')" aria-label="علاقه‌مندی">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="${isFav?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M20.8 4.6a5.5 5.5 0 00-7.8 0L12 5.6l-1-1a5.5 5.5 0 10-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 000-7.8z"/></svg>
+        <button class="pill-btn" onclick="event.stopPropagation(); toggleCompare('${m.slug}')" 
+      style="padding:4px 8px; font-size:11px; ${compareList.includes(m.slug) ? 'background:var(--blue); color:#fff; border-color:var(--blue);' : ''}">
+      ${compareList.includes(m.slug) ? '✅' : '➕'}
+    </button> <svg width="18" height="18" viewBox="0 0 24 24" fill="${isFav?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M20.8 4.6a5.5 5.5 0 00-7.8 0L12 5.6l-1-1a5.5 5.5 0 10-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 000-7.8z"/></svg>
     </button>
     <svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg>
   </div>`;
