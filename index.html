@@ -1371,7 +1371,86 @@ const TITLES = {
   about:{t:"درباره ما", s:""},
   admin:{t:"پنل مدیریت کاربران", s:""}
 };
+// ============ مقایسه رشته‌ها ============
+let compareList = [];
 
+function toggleCompare(slug) {
+  const idx = compareList.indexOf(slug);
+  if(idx > -1) {
+    compareList.splice(idx, 1);
+  } else {
+    if(compareList.length >= 3) {
+      alert("حداکثر ۳ رشته را می‌توانید مقایسه کنید.");
+      return;
+    }
+    compareList.push(slug);
+  }
+  render();
+}
+
+function renderCompare() {
+  const container = document.getElementById("compareContainer");
+  if(!compareList.length) {
+    container.innerHTML = `
+      <div class="empty-state">
+        <div style="font-size:34px; margin-bottom:10px;">📊</div>
+        هیچ رشته‌ای برای مقایسه انتخاب نشده است.<br>
+        به لیست رشته‌ها بروید و روی دکمه «➕ مقایسه» کلیک کنید.
+      </div>
+    `;
+    return;
+  }
+
+  const items = compareList.map(slug => {
+    let m = MAJORS.find(x => x.slug === slug);
+    if(m) return { ...m, isRich: true };
+    let idx = MAJORS_INDEX.find(x => x.slug === slug);
+    return { ...idx, isRich: false, name: idx?.name || slug };
+  });
+
+  let html = `<div style="display:grid; grid-template-columns: repeat(${Math.min(items.length, 3)}, 1fr); gap:16px; margin-top:10px;">`;
+  
+  items.forEach(m => {
+    if(m.isRich) {
+      html += `
+        <div class="field" style="display:flex; flex-direction:column;">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <h3 style="margin:0 0 8px;">${m.name}</h3>
+            <button class="pill-btn" onclick="toggleCompare('${m.slug}')" style="padding:4px 10px; font-size:11px;">❌ حذف</button>
+          </div>
+          <p><strong>گرایش‌ها:</strong> ${m.branches.join('، ')}</p>
+          <p><strong>مدت:</strong> ${m.duration}</p>
+          <p><strong>بازار کار:</strong> ${m.jobMarket}</p>
+          <p><strong>مزایا:</strong> ${m.advantages.join('، ')}</p>
+          <p><strong>چالش‌ها:</strong> ${m.challenges.join('، ')}</p>
+        </div>
+      `;
+    } else {
+      const degreeMap = {kardani:"کاردانی", peyvasteh:"کارشناسی پیوسته", napeyvasteh:"کارشناسی ناپیوسته"};
+      html += `
+        <div class="field" style="display:flex; flex-direction:column;">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <h3 style="margin:0 0 8px;">${m.name}</h3>
+            <button class="pill-btn" onclick="toggleCompare('${m.slug}')" style="padding:4px 10px; font-size:11px;">❌ حذف</button>
+          </div>
+          <p><strong>مقطع:</strong> ${degreeMap[m.degree] || m.degree}</p>
+          ${m.category ? `<p><strong>حوزه:</strong> ${m.category}</p>` : ''}
+          <p><strong>شرایط پذیرش:</strong> بدون کنکور بر اساس سوابق تحصیلی</p>
+        </div>
+      `;
+    }
+  });
+  
+  html += `</div>`;
+  
+  html += `
+    <div style="text-align:center; margin-top:16px;">
+      <button class="pill-btn" onclick="compareList=[]; render();">🗑️ پاک کردن همه</button>
+    </div>
+  `;
+  
+  container.innerHTML = html;
+}
 function render(){
   const hash = (location.hash||"#home").replace("#","");
   const parts = hash.split("/");
